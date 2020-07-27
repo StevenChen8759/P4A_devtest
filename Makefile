@@ -1,0 +1,1 @@
+p4a apk --private ./bluekivy --requirements=python3,kivy,jnius,numpy --permission=BLUETOOTH_ADMIN --permission=BLUETOOTH --permission=ACCESS_FINE_LOCATION --bootstrap=sdl2 --arch=arm64-v8a --android_api=29 --package=example.bluekivy --name=BlueKivy --dist_name=BlueKivy --release --version 0.0.2 
