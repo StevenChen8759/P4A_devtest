@@ -13,7 +13,7 @@ KEYSTORE := stch.keystore
 KSALIAS  := stch
 KSPASSWD :=
 
-all: apk sign install
+all: apk sign
 
 .PHONY: clean
 
@@ -27,11 +27,15 @@ apk:
         --release --version $(VERSION)
 
 sign:
-	@[ -z $(KSPASSWD) ] && (echo "Please input keystore password via KSPASSWD variable" ; \
-        echo "After KSPASSWD is set, please input make sign to finish whole task..." ; exit 1) || continue
-	jarsigner -verbose -keystore $(KEYSTORE) -signedjar $(DISTNAME)_v$(VERSION).apk $(DISTNAME)__$(ARCH)-release-unsigned-$(VERSION)-.apk $(KSALIAS) -storepass $(KSPASSWD)
-	@echo "Auto remove unsigned apk file..."
-	rm -f $(DISTNAME)__$(ARCH)-release-unsigned-$(VERSION)-.apk
+ifdef KSPASSWD
+	jarsigner -verbose -keystore $(KEYSTORE) -signedjar $(DISTNAME)_v$(VERSION).apk \
+                  $(DISTNAME)__$(ARCH)-release-unsigned-$(VERSION)-.apk $(KSALIAS) -storepass $(KSPASSWD)
+else
+	jarsigner -verbose -keystore $(KEYSTORE) -signedjar $(DISTNAME)_v$(VERSION).apk \
+                  $(DISTNAME)__$(ARCH)-release-unsigned-$(VERSION)-.apk $(KSALIAS)
+endif
+	@echo "Auto remove unsigned apk file, file name: $(DISTNAME)__$(ARCH)-release-unsigned-$(VERSION)-.apk"
+	@rm -f $(DISTNAME)__$(ARCH)-release-unsigned-$(VERSION)-.apk
 
 install:
 	@echo "Install Apk to the Android device via adb, Please ensure the connection of the device"
