@@ -52,6 +52,10 @@ install: devcn
 layout:
 	python3 scripts/layout.py
 
+# App runtime testing
+run:
+	python3 src/main.py
+
 #--------------------------------------------------------------------------------
 # adb manipulation
 
