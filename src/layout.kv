@@ -10,13 +10,16 @@ BoxLayout:
         BoxLayout:
             orientation: 'horizontal'
             Button:
-                text: 'Get Bluetooth Status'
+                text: 'Get BTH Status'
                 on_release: app.getbthstat()
             Button:
                 id: scanbutt
                 disabled: True
-                text: 'Scan Bluetooth Devices'
+                text: 'Scan BTH Devices'
                 on_release: app.scanbthdevs()
+            Button:
+                id: getscanres
+                text: 'Get discovered BTH devices'
 
         Button:
             id: nptest
