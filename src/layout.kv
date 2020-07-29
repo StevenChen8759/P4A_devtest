@@ -1,0 +1,23 @@
+BoxLayout:
+    orientation: 'vertical'
+    Label:
+        id: stat
+        text: 'Please get the bluetooth status first'
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        BoxLayout:
+            orientation: 'horizontal'
+            Button:
+                text: 'Get Bluetooth Status'
+                on_release: app.getbthstat()
+            Button:
+                id: scanbutt
+                disabled: True
+                text: 'Scan Bluetooth Devices'
+                on_release: app.scanbthdevs()
+
+        Button:
+            id: nptest
+            text: 'run numpy testing script'
