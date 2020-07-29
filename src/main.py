@@ -4,9 +4,15 @@
 # Testing term 3: numpy operation testing
 # This code is written by Steven HH Chen
 
+# UI import
 from kivy.app import App
 from kivy.lang.builder import Builder
 from kivy.uix.label import Label
+from kivy.uix.popup import Popup
+
+# Other import
+import numpy as np
+import sys, traceback, time
 
 # Note: inherit class App!, Add __ function prefix to make it private
 # Note: App, Builder, Layout can be polymorphism
