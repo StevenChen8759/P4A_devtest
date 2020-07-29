@@ -11,7 +11,7 @@ BoxLayout:
             orientation: 'horizontal'
             Button:
                 text: 'Get BTH Status'
-                on_release: app.getbthstat()
+                on_release: app.test()
             Button:
                 id: scanbutt
                 disabled: True
@@ -25,19 +25,19 @@ BoxLayout:
             id: nptest
             text: 'run numpy testing script'
 
-<InfoPopup>:
+<PopupInfoLayout>:
     FloatLayout:
         size: (400,400)
 
         Label:
             id: info
-            text: infotext
+            text: "Testing..."
             size_hint: (.5,.25)
             pos: (20,20)
 
         Button:
             id: can
-            text: back
+            text: "Back"
             size_hint: (.5,.25)
             pos: (200,200)
        
