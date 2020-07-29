@@ -139,3 +139,9 @@ cython_debug/
 
 # Virtualenv ignored items
 p4a_kivy/
+
+# Android output apk ignored items
+*.apk
+*.keystore
+venv_init
+venv_exit
