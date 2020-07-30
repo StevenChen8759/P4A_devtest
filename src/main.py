@@ -11,7 +11,6 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 from kivy.uix.stacklayout import StackLayout
-from kivy.graphics import Color, Rectangle
 
 # Other import
 import numpy as np
@@ -20,12 +19,34 @@ import sys, traceback, time
 # Note: inherit class App!, Add __ function prefix to make it private
 # Note: App, Builder, Layout can be polymorphism
 class TestApp(App):
+	lb = None
 	def build(self):
 		ui = Builder.load_file("layout.kv")
+		self.lb = ui.ids['stat']
 		return ui
 
 	def test(self):
 		self.__infoshow("Info","Test")
+
+	def nptest(self):
+		#----------- Declaration ------------
+		ax = np.array([[1,2,3],[4,5,6]],dtype = np.int)
+		self.__nparr_info("Basic Array Declaration - ax", ax)
+		self.__nparr_info("np.zeros((3,4))", np.zeros((3,4)))
+		self.__nparr_info("np.ones((3,4), int16)", np.ones((3,4),dtype = np.int16))
+		self.__nparr_info("np.empty((3,4))", np.empty((3,4)))
+		self.__nparr_info("np.arange(10,20,2)", np.arange(10,20,2))
+		self.__nparr_info("np.arange(12).reshape(3,4)", np.arange(12).reshape(3,4))
+		self.__nparr_info("np.linspace(1,10,5)", np.linspace(1,10,5))
+		self.__nparr_info("np.linspace(1,10,6).reshape(2,3)", np.linspace(1,10,6).reshape(2,3))
+
+		#------------ Basic OPs -----------
+
+	def __nparr_info(self, npmsg, nparr):
+		st = "content:\n %s \n______\ndim: %s \nshape: %s \nsize: %s \ndtype: %s" % (
+			 str(nparr), str(nparr.ndim), str(nparr.shape),
+			 str(nparr.size), str(nparr.dtype))
+		self.__infoshow(npmsg, st)
 
 	def __infoshow(self, msgtitle, msg):
 		sl = StackLayout(size=(400, 400), orientation='bt-rl')
