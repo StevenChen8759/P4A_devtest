@@ -12,6 +12,15 @@ from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 from kivy.uix.stacklayout import StackLayout
 
+# Pyjnius import and Autoclass declaration
+from jnius import autoclass
+#from android.broadcast import BroadcastReceiver
+
+BluetoothAdapter = autoclass('android.bluetooth.BluetoothAdapter')
+BluetoothDevice = autoclass('android.bluetooth.BluetoothDevice')
+BluetoothSocket = autoclass('android.bluetooth.BluetoothSocket')
+
+
 # Other import
 import numpy as np
 import sys, traceback, time
@@ -20,9 +29,11 @@ import sys, traceback, time
 # Note: App, Builder, Layout can be polymorphism
 class TestApp(App):
 	lb = None
+	scanbutt=None
 	def build(self):
 		ui = Builder.load_file("layout.kv")
 		self.lb = ui.ids['stat']
+		self.scanbutt = ui.ids['scanbutt']
 		return ui
 
 	def test(self):
@@ -42,19 +53,45 @@ class TestApp(App):
 
 		#------------ Basic OPs -----------
 
+	def getbthstat(self):
+		try:
+			self.lb.text = "Already get default adapter, now you can scan the devs."
+			adapter = BluetoothAdapter.getDefaultAdapter()
+			if adapter != None:
+				self.bthad=adapter
+				self.scanbutt.disabled=False
+			adinfo = "Name: %s \n Enabled: %s\n Address: %s \n Discovering: %s\n(Stat,Scan) Code: (%d,%d)" % (
+                      adapter.getName(), str(adapter.isEnabled()), adapter.getAddress(),
+                      str(adapter.isDiscovering()), adapter.getState(), adapter.getScanMode())
+			self.__infoshow("Default Adapter", adinfo)
+		except Exception as ex:
+			self.__exshow(ex)
+
+
 	def __nparr_info(self, npmsg, nparr):
 		st = "content:\n %s \n______\ndim: %s \nshape: %s \nsize: %s \ndtype: %s" % (
 			 str(nparr), str(nparr.ndim), str(nparr.shape),
 			 str(nparr.size), str(nparr.dtype))
 		self.__infoshow(npmsg, st)
 
+	def __exshow(self, exobj):
+		error_class = exobj.__class__.__name__
+		detail = exobj.args[0]
+		cl, exc, tb = sys.exc_info()
+		lastCallStack = traceback.extract_tb(tb)[-1]
+		fileName = lastCallStack[0]
+		lineNum = lastCallStack[1]
+		funcName = lastCallStack[2]
+		exinfo = "File \"{}\", line {}, in {}: [{}] {}".format(fileName, lineNum, funcName, error_class, detail)
+		self.__infoshow("ERROR!!!!! Python Exception!!!!!", exinfo)
+
 	def __infoshow(self, msgtitle, msg):
-		sl = StackLayout(size=(400, 400), orientation='bt-rl')
+		sl = StackLayout(size=(550, 550), orientation='bt-rl')
 		butt = Button(text='Back', size_hint=(.20,.10))
 		sl.add_widget(butt)
-		lb = Label(text=msg, text_size=(200,200))
+		lb = Label(text=msg, text_size=(300,400))
 		sl.add_widget(lb)
-		popup = Popup(title=msgtitle, content=sl, size_hint=(None, None), size=(400, 400))
+		popup = Popup(title=msgtitle, content=sl, size_hint=(None, None), size=(600, 600))
 		butt.on_release = popup.dismiss
 		popup.open()
 

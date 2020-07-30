@@ -11,15 +11,15 @@ BoxLayout:
             orientation: 'horizontal'
             Button:
                 text: 'Get BTH Status'
-                on_release: app.test()
+                on_release: app.getbthstat()
             Button:
                 id: scanbutt
                 disabled: True
                 text: 'Scan BTH Devices'
-                on_release: app.scanbthdevs()
-            Button:
-                id: getscanres
-                text: 'Get discovered \n BTH devices'
+                on_release: app.test()
+#            Button:
+#                id: getscanres
+#                text: 'Get discovered \n BTH devices'
 
         Button:
             id: nptest
