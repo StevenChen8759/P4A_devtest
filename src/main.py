@@ -30,6 +30,7 @@ import sys, traceback, time
 class TestApp(App):
 	lb = None
 	scanbutt=None
+	bthad=None
 	def build(self):
 		ui = Builder.load_file("layout.kv")
 		self.lb = ui.ids['stat']
@@ -55,15 +56,32 @@ class TestApp(App):
 
 	def getbthstat(self):
 		try:
-			self.lb.text = "Already get default adapter, now you can scan the devs."
+			self.lb.text = "Already get default adapter, now you can scan the devs.\nIf you cannot click device scan button,\nplease wait and re-click the get status button."
 			adapter = BluetoothAdapter.getDefaultAdapter()
-			if adapter != None:
+			if adapter != None and not adapter.isDiscovering():
 				self.bthad=adapter
 				self.scanbutt.disabled=False
-			adinfo = "Name: %s \n Enabled: %s\n Address: %s \n Discovering: %s\n(Stat,Scan) Code: (%d,%d)" % (
+			adinfo = "Name: %s\n Enabled: %s\n Address: %s\n Discovering: %s\n(Stat,Scan) Code: (%d,%d)" % (
                       adapter.getName(), str(adapter.isEnabled()), adapter.getAddress(),
                       str(adapter.isDiscovering()), adapter.getState(), adapter.getScanMode())
 			self.__infoshow("Default Adapter", adinfo)
+		except Exception as ex:
+			self.__exshow(ex)
+
+	def scanbthdevs(self):
+		try:
+			# Start discover -> status polling -> list result
+			if self.bthad.startDiscovery():
+				self.__infoshow("Info", "Scan has started...")
+				self.scanbutt.disabled = True
+# Can replace with select()-like or asynchronous design
+#                    while self.bthad.isDiscovering():
+#                        time.sleep(2)
+#				self.statlabel.text = BthRecv.getResultData()
+				self.lb.text = "Please view-up the scan reslut via adb shell, logcat command...%s" % (
+								"\nYou can re-scan after previous scan finished...\nClick Get BTH status button for chcking")
+			else:
+				self.__infoshow("Scan Failed!", "Failed to start discovery...")
 		except Exception as ex:
 			self.__exshow(ex)
 
