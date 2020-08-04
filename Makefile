@@ -2,7 +2,7 @@
 # p4a parameter
 SRC         := ./src
 REQUIREMENT := python3,kivy,jnius,numpy,android
-PERMISSION  := BLUETOOTH_ADMIN, BLUETOOTH, ACCESS_FINE_LOCATION
+PERMISSION  := BLUETOOTH_ADMIN BLUETOOTH ACCESS_FINE_LOCATION FOREGROUND_SERVICE
 BOOTSTRAP   := sdl2
 ARCH        := arm64-v8a
 ANDROAPI    := 29
@@ -21,10 +21,19 @@ KSPASSWD :=
 # default action and settings
 all: apk sign
 
+deploy: apk sign install
+
 .PHONY: clean
 
 #--------------------------------------------------------------------------------
 # apk packing, signing, and installing
+
+test:
+	@echo $(words $(PERMISSION))
+	for i in ${PERMISSION}; do $(eval OUT+="--permisson=$$i"); done
+#	$(eval OUT+="--permisson=$(word 1,$(PERMISSION))")
+#	$(eval OUT+="--permisson=$(word 2,$(PERMISSION))")
+	@echo $(OUT)
 
 apk:
 	p4a apk --private $(SRC) --requirements=$(REQUIREMENT) \
