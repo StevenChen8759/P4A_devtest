@@ -11,15 +11,17 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 from kivy.uix.stacklayout import StackLayout
+from kivy.utils import platform
 
 # Pyjnius import and Autoclass declaration
 from jnius import autoclass
 #from android.broadcast import BroadcastReceiver
+import android
 
 BluetoothAdapter = autoclass('android.bluetooth.BluetoothAdapter')
 BluetoothDevice = autoclass('android.bluetooth.BluetoothDevice')
 BluetoothSocket = autoclass('android.bluetooth.BluetoothSocket')
-
+#StchServ = autoclass('example.kivy.stch.StchService')
 
 # Other import
 import numpy as np
@@ -52,7 +54,7 @@ class TestApp(App):
 		self.__nparr_info("np.linspace(1,10,5)", np.linspace(1,10,5))
 		self.__nparr_info("np.linspace(1,10,6).reshape(2,3)", np.linspace(1,10,6).reshape(2,3))
 
-		#------------ Basic OPs -----------
+		#------+------ Basic OPs -----------
 
 	def getbthstat(self):
 		try:
@@ -85,6 +87,9 @@ class TestApp(App):
 		except Exception as ex:
 			self.__exshow(ex)
 
+	def runserv(self):
+		android.start_service(title='Stch', description='Steven Chen Testing')
+
 
 	def __nparr_info(self, npmsg, nparr):
 		st = "content:\n %s \n______\ndim: %s \nshape: %s \nsize: %s \ndtype: %s" % (
@@ -112,6 +117,14 @@ class TestApp(App):
 		popup = Popup(title=msgtitle, content=sl, size_hint=(None, None), size=(600, 600))
 		butt.on_release = popup.dismiss
 		popup.open()
+
+class ServiceApp(App):
+	def build(self):
+		if platform == 'Android':
+			from android import AndroidService
+			service = AndroidService('my pong service', 'running')
+			serice.start('service started')
+			self.service = service
 
 if __name__=="__main__":
 	myapp = TestApp()

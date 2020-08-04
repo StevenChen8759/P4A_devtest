@@ -21,10 +21,19 @@ BoxLayout:
 #                id: getscanres
 #                text: 'Get discovered \n BTH devices'
 
-        Button:
-            id: nptest
-            on_release: app.nptest()
-            text: 'run numpy testing script'
+        BoxLayout:
+            orientation: 'horizontal'
+
+            Button:
+                id: nptest
+                on_release: app.nptest()
+                text: 'run numpy testing script'
+
+            Button:
+                id: bgserv
+                on_release: app.runserv()
+                text: 'run background service'
+
 
 <PopupInfoLayout>:
     FloatLayout:

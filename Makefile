@@ -1,7 +1,7 @@
 #--------------------------------------------------------------------------------
 # p4a parameter
 SRC         := ./src
-REQUIREMENT := python3,kivy,jnius,numpy
+REQUIREMENT := python3,kivy,jnius,numpy,android
 PERMISSION  := BLUETOOTH_ADMIN, BLUETOOTH, ACCESS_FINE_LOCATION
 BOOTSTRAP   := sdl2
 ARCH        := arm64-v8a
@@ -29,6 +29,7 @@ all: apk sign
 apk:
 	p4a apk --private $(SRC) --requirements=$(REQUIREMENT) \
         --permission=BLUETOOTH_ADMIN  --permission=BLUETOOTH --permission=ACCESS_FINE_LOCATION \
+        --permission=FOREGROUND_SERVICE --service=StchService:serv.py \
         --bootstrap=$(BOOTSTRAP) --arch=$(ARCH) --android_api=$(ANDROAPI) \
         --package=$(PKGNAME) --name=$(APPNAME) --dist_name=$(DISTNAME) \
         --release --version $(VERSION)
