@@ -53,7 +53,7 @@ $ echo -e "\ndeactivate" >> venv_exit
 $ source venv_init  # Start up
 $ source venv_exit  # Exit environment
 ```
-*    After virtual environment is started up, install dependency kit.
+*    *After virtual environment is started up*, install dependency kit.
 ```shell
 $ pip3 install virtualenv cython kivy python-for-android buildozer
 $ p4a
@@ -66,7 +66,7 @@ A packaging tool for turning Python scripts and apps into Android APKs
 ```
 *    Then, we will install **Android cmd develop kit**.
         *    Please download command line tool from [Android Official](https://developer.android.com/studio#downloads).
-        *    Please note that `sdkmanager --list` should NOT contain any ==Java Exception==.
+        *    Please note that `sdkmanager --list` should NOT contain any **Java Exception**.
 ```shell
 $ cd ~/
 $ mkdir Android ; cd Android
