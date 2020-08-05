@@ -2,7 +2,7 @@
 # p4a parameter
 SRC         := ./src
 REQUIREMENT := python3,kivy,jnius,numpy,android
-PERMISSION  := BLUETOOTH_ADMIN BLUETOOTH ACCESS_FINE_LOCATION FOREGROUND_SERVICE
+PERMISSION  := BLUETOOTH_ADMIN BLUETOOTH ACCESS_FINE_LOCATION FOREGROUND_SERVICE RECEIVE_BOOT_COMPLETED
 BOOTSTRAP   := sdl2
 ARCH        := arm64-v8a
 ANDROAPI    := 29
@@ -28,17 +28,10 @@ deploy: apk sign install
 #--------------------------------------------------------------------------------
 # apk packing, signing, and installing
 
-test:
-	@echo $(words $(PERMISSION))
-	for i in ${PERMISSION}; do $(eval OUT+="--permisson=$$i"); done
-#	$(eval OUT+="--permisson=$(word 1,$(PERMISSION))")
-#	$(eval OUT+="--permisson=$(word 2,$(PERMISSION))")
-	@echo $(OUT)
-
 apk:
 	p4a apk --private $(SRC) --requirements=$(REQUIREMENT) \
-        --permission=BLUETOOTH_ADMIN  --permission=BLUETOOTH --permission=ACCESS_FINE_LOCATION \
-        --permission=FOREGROUND_SERVICE --service=StchService:serv.py \
+        $(patsubst %,--permission=% ,$(PERMISSION))\
+        --service=StchService:serv.py \
         --bootstrap=$(BOOTSTRAP) --arch=$(ARCH) --android_api=$(ANDROAPI) \
         --package=$(PKGNAME) --name=$(APPNAME) --dist_name=$(DISTNAME) \
         --release --version $(VERSION)
@@ -76,7 +69,7 @@ devlist:
 # device connect
 devcn: devlist
 
-#device reconnect
+# device reconnect
 devrc: devdc devlist
 
 # device disconnect
@@ -87,3 +80,4 @@ devdc:
 
 clean:
 	rm *.apk src/*.pyc
+
