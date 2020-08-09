@@ -31,7 +31,7 @@ deploy: apk sign install
 apk:
 	p4a apk --private $(SRC) --requirements=$(REQUIREMENT) \
         $(patsubst %,--permission=% ,$(PERMISSION))\
-        --service=StchService:serv.py \
+        --service=stchservice:serv.py --service=testserv:test.py\
         --bootstrap=$(BOOTSTRAP) --arch=$(ARCH) --android_api=$(ANDROAPI) \
         --package=$(PKGNAME) --name=$(APPNAME) --dist_name=$(DISTNAME) \
         --release --version $(VERSION)

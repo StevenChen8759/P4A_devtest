@@ -1,5 +1,5 @@
-# Python for Android Service - connect to 7688 so
-import socket
+# Python for Android Service - connect to 7688 socket
+'''import socket
 
 host='192.168.43.89'
 port=502
@@ -12,4 +12,6 @@ if __name__ == '__main__':
 	resp = str(so.recv(1024), encoding='utf-8')
 	print("resp: %s" % resp)
 
-	so.close()
+	so.close()'''
+
+print("Hello world from Android Background Service...")

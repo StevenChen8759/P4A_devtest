@@ -54,7 +54,7 @@ class TestApp(App):
 		self.__nparr_info("np.linspace(1,10,5)", np.linspace(1,10,5))
 		self.__nparr_info("np.linspace(1,10,6).reshape(2,3)", np.linspace(1,10,6).reshape(2,3))
 
-		#------+------ Basic OPs -----------
+		#------------- Basic OPs -----------
 
 	def getbthstat(self):
 		try:
@@ -88,8 +88,14 @@ class TestApp(App):
 			self.__exshow(ex)
 
 	def runserv(self):
-		android.start_service(title='Stch', description='Steven Chen Testing')
-
+		# android.start_service(title='Stch', description='Steven Chen Socket Testing...')
+		service = autoclass('example.kivy.stch.ServiceTestserv')
+		mActivity = autoclass('org.kivy.android.PythonActivity').mActivity
+		serv = autoclass('example.kivy.stch.ServiceStchservice')
+		mact = autoclass('org.kivy.android.PythonActivity').mActivity
+		argument = ''
+		service.start(mActivity, argument)
+		serv.start(mact, argument)
 
 	def __nparr_info(self, npmsg, nparr):
 		st = "content:\n %s \n______\ndim: %s \nshape: %s \nsize: %s \ndtype: %s" % (
